@@ -87,13 +87,17 @@ void QueueLinked<T>::enqueue(T* item)
 
     //DO THIS (enqueueing the first item is a special case)
 
-
-
-
-
-
-
-
+	if (sze == 0) // adding the first item
+	{
+		back = node;
+		node->setNext(node);
+	}
+	else 
+	{
+		node->setNext(back->getNext())//sets the node's next to the head
+		back->setNext(node);// sets back so that is now point to the new node
+		back = node;//makes our new node the new back
+	}
 
     sze++;
 }

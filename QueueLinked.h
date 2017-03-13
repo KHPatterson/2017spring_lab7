@@ -10,6 +10,7 @@ class QueueLinked
    private:
       NextNode<T>* back;
       int sze;
+	  QueueLinked<T>* list;
 
    public:
       QueueLinked();
@@ -28,6 +29,7 @@ QueueLinked<T>::QueueLinked()
 {
    back = NULL;
    sze = 0;
+   
 }
 
 template < class T >
@@ -89,12 +91,12 @@ void QueueLinked<T>::enqueue(T* item)
 
 	if (sze == 0) // adding the first item
 	{
-		back = node;
-		node->setNext(node);
+		back = node; //node becomes the back
+		node->setNext(node); //node points to itself
 	}
 	else 
 	{
-		node->setNext(back->getNext())//sets the node's next to the head
+		node->setNext(back->getNext());//sets the node's next to the head
 		back->setNext(node);// sets back so that is now point to the new node
 		back = node;//makes our new node the new back
 	}
@@ -110,18 +112,27 @@ T* QueueLinked<T>::dequeue()
     //DO THIS (dequeueing the last item is a special case)
     //also, check that there are items before dequeueing
 
-
-
-
-
-
-
-
-
-
-
-
-
+	if(sze == 0) return NULL; //if the array is empty do nothing
+	
+	if(sze == 1)
+	{
+		item = getNext(back);
+		back->setNext(NULL);
+		back = NULL;
+	}
+	else
+	{
+		item = getNext(back);
+		NextNode<T>* temp = getNext(back);
+		NextNode<T>* node = getNext(back);
+		
+		node = getNext(node); //gets the item after head
+		back->setNext(node); //makes the item after the current head the new head
+		
+		item->setNext(NULL); //destroys the item's link
+	}
+	
+	sze--;
     return item;
 }
 
